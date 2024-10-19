@@ -15,7 +15,7 @@
 int main(int argc, char *argv[]) {
   if (argc > 1) {
     // help text here
-    printf("To use this program, add cmds\n");
+    printf("To use this program, add cmds\nAvailable commands: list, clear, quit");
   } else {
     printf("Welcome, plz send things");
     int run = 1;
