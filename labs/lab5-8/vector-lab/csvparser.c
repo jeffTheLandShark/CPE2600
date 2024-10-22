@@ -8,5 +8,16 @@
  * Name: Leigh Goetsch
  *
  */
+#include "vectstore.h"
 
-void parse_csv(const char *filename) {}
+#include <stdio.h>
+
+void parse_csv(const char *filename) {
+  FILE *input_csv;
+
+  input_csv = fopen(filename, "r");
+  if (!input_csv) {
+    printf("Error opening file: %s\n", filename);
+    return;
+  }
+}
