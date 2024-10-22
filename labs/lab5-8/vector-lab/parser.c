@@ -9,13 +9,14 @@
  *
  */
 
+#include "parser.h"
+#include "csvparser.h"
+#include "vectmath.h"
+
 #include <ctype.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-
-#include "parser.h"
-#include "vectmath.h"
 
 int parse() {
   char buffer[MAX_CHARS] = {};
@@ -60,6 +61,14 @@ int parse() {
   case 1: // single command
     cmd = parseCmd(tokens[0]);
     return cmd;
+  case 2:
+    if (!strcmp(tokens[0], "load")) {
+      parse_csv(tokens[1]);
+      list();
+    } else {
+      invalidMsg();
+    }
+    break;
 
   case 3: // a = x
           // assign a digit

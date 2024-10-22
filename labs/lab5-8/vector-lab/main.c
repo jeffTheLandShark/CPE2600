@@ -10,17 +10,23 @@
  */
 
 #include "parser.h"
+#include "csvparser.h"
 #include "vectstore.h"
+
 #include <stdio.h>
+#include <strings.h>
 
 int main(int argc, char *argv[]) {
-  if (argc > 1) {
+  if (argc > 1 && (!strcasecmp(argv[1], "-h") || !strcasecmp(argv[1], "-help"))) {
     // help text here
     printf("To use this program, add cmds\nAvailable commands: list, clear, quit");
   } else {
+    init();
+    if (argc > 2 && !strcasecmp(argv[1], "-f")) {
+      parse_csv(argv[2]);
+    }
     printf("Welcome, plz send things");
     int run = 1;
-    init();
     while (run) {
       printf("\n> ");
       run = parse();
