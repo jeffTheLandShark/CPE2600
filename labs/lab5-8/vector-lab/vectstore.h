@@ -1,6 +1,6 @@
 /**
  * @file vectstore.h
- * @brief defines vect struct and methods for storing vects
+ * @brief defines methods for storing vects
  *
  * Course: CPE2600
  * Section: 121
@@ -9,17 +9,7 @@
  *
  *
  */
-#ifndef VECTSTORE_H
-#define VECTSTORE_H
-
-typedef struct Vect {
-  int x;
-  int y;
-  int z;
-  char name[20];
-} Vect;
-
-#endif
+#include "Vect.h"
 
 void assignVect(Vect src, Vect dst);
 
