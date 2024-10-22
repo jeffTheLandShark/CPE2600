@@ -11,6 +11,8 @@
  */
 #include "Vect.h"
 
+void init();
+
 void assignVect(Vect src, Vect dst);
 
 Vect copyVect(Vect src, Vect dst);

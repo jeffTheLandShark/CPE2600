@@ -11,16 +11,20 @@
  */
 #include "vectstore.h"
 #include <stdio.h>
+#include <stdlib.h>
 #include <string.h>
 
-#define MAX_SIZE 10
+#define INITIAL_SIZE 10
 
+int current_max = INITIAL_SIZE;
 int size = 0;
-Vect storage[10];
+Vect *storage;
+
+void init() { storage = malloc(INITIAL_SIZE * sizeof(Vect)); }
 
 void assignVect(Vect src, Vect dst) {
   // if destination exists, replace it
-  if (findVect(dst.name) < MAX_SIZE) {
+  if (findVect(dst.name) < current_max) {
     replaceVect(src, dst);
     // else, add a new with the same name
   } else {
@@ -41,7 +45,7 @@ Vect getVect(const char *name) {
   // get vect location in array
   int loc = findVect(name);
   // if exists (in bounds), return vect at location
-  if (loc < MAX_SIZE) {
+  if (loc < current_max) {
     return storage[loc];
     // if out of bounds, return empty vect at next available location
   } else {
@@ -61,16 +65,16 @@ int findVect(const char *name) {
     }
   }
   // if not found, return max size
-  return MAX_SIZE;
+  return current_max;
 }
 
 void insertVect(Vect src) {
   // if in bounds, add item to array
-  if (size < MAX_SIZE) {
+  if (size < current_max) {
     storage[size++] = src;
   } else {
-    printf("You are at maximum capacity for vectors. Please clear storage or "
-           "replace a vector.");
+    current_max = current_max * 2;
+    storage = realloc(storage, current_max * sizeof(Vect));
   }
 }
 
@@ -83,7 +87,7 @@ void replaceVect(Vect src, Vect dst) {
 
 void clear() {
   // clear memory
-  memset(storage, 0, sizeof(storage));
+  memset(storage, 0, current_max * sizeof(Vect));
   // reset size
   size = 0;
 }
@@ -91,13 +95,14 @@ void clear() {
 void list() {
   // iterate through storage and print
   for (int i = 0; i < size; i++) {
+    printf("%d | ", i + 1);
     displayVect(storage[i]);
   }
 }
 
 void display(const char *name) {
   // get the vect
-  if (findVect(name) < MAX_SIZE) {
+  if (findVect(name) < current_max) {
     // print the vect
     displayVect(getVect(name));
   } else {
@@ -107,5 +112,5 @@ void display(const char *name) {
 
 void displayVect(Vect vect) {
   // print struct elements
-  printf("%s: %d, %d, %d\n", vect.name, vect.x, vect.y, vect.z);
+  printf("%5s: %3d, %3d, %3d\n", vect.name, vect.x, vect.y, vect.z);
 }

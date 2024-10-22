@@ -10,6 +10,7 @@
  */
 
 #include "parser.h"
+#include "vectstore.h"
 #include <stdio.h>
 
 int main(int argc, char *argv[]) {
@@ -19,11 +20,12 @@ int main(int argc, char *argv[]) {
   } else {
     printf("Welcome, plz send things");
     int run = 1;
+    init();
     while (run) {
       printf("\n> ");
       run = parse();
     }
-    printf("\nEnding Program.");
+    printf("\nEnding Program.\n");
   }
   return 0;
 }
