@@ -9,7 +9,6 @@
  *
  */
 
-void parse_csv(const char* filename);
+void parse_csv(const char *filename);
 
-void load_csv(const char* filename);
-
+void load_csv(const char *filename);

@@ -8,8 +8,9 @@
  * Name: Leigh Goetsch
  *
  */
+#include "Vect.h"
+
 #include <stdbool.h>
-#include "vectstore.h"
 
 #define MAX_TOKENS 5
 #define MAX_CHARS 100

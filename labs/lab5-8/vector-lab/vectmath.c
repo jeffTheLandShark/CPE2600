@@ -9,9 +9,9 @@
  *
  *
  */
-#include <string.h>
-
 #include "vectmath.h"
+
+#include <string.h>
 
 Vect addVect(const char *name, Vect vect1, Vect vect2) {
   Vect vect;

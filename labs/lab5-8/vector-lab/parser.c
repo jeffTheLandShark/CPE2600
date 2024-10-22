@@ -12,6 +12,7 @@
 #include "parser.h"
 #include "csvparser.h"
 #include "vectmath.h"
+#include "vectstore.h"
 
 #include <ctype.h>
 #include <stdio.h>
