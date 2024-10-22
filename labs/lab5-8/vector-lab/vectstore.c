@@ -20,7 +20,12 @@ int current_max = INITIAL_SIZE;
 int size = 0;
 Vect *storage;
 
-void init() { storage = malloc(INITIAL_SIZE * sizeof(Vect)); }
+void init() {
+  atexit(cleanup_storage);
+  storage = malloc(INITIAL_SIZE * sizeof(Vect));
+}
+
+void cleanup_storage() { free(storage); }
 
 void assignVect(Vect src, Vect dst) {
   // if destination exists, replace it
@@ -87,7 +92,8 @@ void replaceVect(Vect src, Vect dst) {
 
 void clear() {
   // clear memory
-  memset(storage, 0, current_max * sizeof(Vect));
+  free(storage);
+  init();
   // reset size
   size = 0;
 }

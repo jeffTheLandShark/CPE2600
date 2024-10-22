@@ -13,6 +13,8 @@
 
 void init();
 
+void cleanup_storage();
+
 void assignVect(Vect src, Vect dst);
 
 Vect copyVect(Vect src, Vect dst);
