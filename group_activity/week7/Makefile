@@ -1,0 +1,19 @@
+CC=gcc
+CFLAGS=-c -Wall -g
+LDFLAGS=
+SOURCES=main.c
+OBJECTS=$(SOURCES:.c=.o)
+EXECUTABLE=exename.exe
+
+all: $(SOURCES) $(EXECUTABLE)
+
+# pull in dependency info for *existing* .o files
+-include $(OBJECTS:.o=.d)
+
+$(EXECUTABLE): $(OBJECTS)
+	$(CC) $(OBJECTS) $(LDFLAGS) -o $@
+.c.o:
+	$(CC) $(CFLAGS) $< -o $@
+	$(CC) -MM $< > $*.d
+clean:
+	rm -rf $(OBJECTS) $(EXECUTABLE)
