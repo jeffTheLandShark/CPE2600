@@ -23,4 +23,3 @@ int parseCmd(const char *cmd);
 
 void parseMath(char tokens[MAX_TOKENS][MAX_CHARS], bool isAssigned);
 
-Vect vectEquals(const char *name, int x, int y, int z);

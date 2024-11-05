@@ -121,3 +121,13 @@ void displayVect(Vect vect) {
   // print struct elements
   printf("%5s: %3d, %3d, %3d\n", vect.name, vect.x, vect.y, vect.z);
 }
+
+Vect vectEquals(const char *name, int x, int y, int z) {
+  // copies a vect by its parameters
+  Vect vect;
+  strcpy(vect.name, name);
+  vect.x = x;
+  vect.y = y;
+  vect.z = z;
+  return vect;
+}

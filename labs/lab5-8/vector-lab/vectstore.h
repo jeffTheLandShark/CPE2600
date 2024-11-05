@@ -34,3 +34,5 @@ void list();
 void display(const char *name);
 
 void displayVect(Vect vect);
+
+Vect vectEquals(const char *name, int x, int y, int z);

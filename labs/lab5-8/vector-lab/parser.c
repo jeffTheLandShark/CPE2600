@@ -133,16 +133,6 @@ int parseCmd(const char *cmd) {
   return 1;
 }
 
-Vect vectEquals(const char *name, int x, int y, int z) {
-  // copies a vect by its parameters
-  Vect vect;
-  strcpy(vect.name, name);
-  vect.x = x;
-  vect.y = y;
-  vect.z = z;
-  return vect;
-}
-
 void parseMath(char tokens[MAX_TOKENS][MAX_CHARS], bool isAssigned) {
   int name, a, op, b;
   // if assigned, there are 5 tokens (name = a op b)
