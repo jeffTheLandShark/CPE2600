@@ -51,4 +51,6 @@ void output_csv(const char *filename) {
     Vect vect = fromStorage(i);
     fprintf(output_csv, "%s, %d, %d, %d\n", vect.name, vect.x, vect.y, vect.z);
   }
+  printf("File saved.\n");
+  fclose(output_csv);
 }
