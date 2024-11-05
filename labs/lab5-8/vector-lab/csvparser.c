@@ -27,7 +27,8 @@ void parse_csv(const char *filename) {
   int x, y, z;
   // Read and process each line of the CSV file
   while (fgets(line, sizeof(line), input_csv) != NULL) {
-    int result = sscanf(line, "%s, %d, %d, %d", name, &x, &y, &z);
+    int result = sscanf(line, "%[^,],%d,%d,%d", name, &x, &y, &z);
+
     if (result != 4) {
       printf("File is formatted incorrectly on line: %s\n", line);
       return;
