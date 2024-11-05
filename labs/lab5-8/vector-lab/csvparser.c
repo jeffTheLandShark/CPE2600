@@ -28,16 +28,13 @@ void parse_csv(const char *filename) {
   // Read and process each line of the CSV file
   while (fgets(line, sizeof(line), input_csv) != NULL) {
     int result = sscanf(line, "%[^,],%d,%d,%d", name, &x, &y, &z);
-
-    if (result != 4) {
+    if (result == 4) {
+      Vect vect = vectEquals(name, x, y, z);
+      assignVect(vect, getVect(name));
+    } else {
       printf("File is formatted incorrectly on line: %s\n", line);
-      return;
     }
-    Vect vect = vectEquals(name, x, y, z);
-    assignVect(vect, getVect(name));
-    display(name);
   }
-
   fclose(input_csv);
 }
 
