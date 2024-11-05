@@ -3,7 +3,7 @@ CFLAGS=-c -Wall -ggdb3
 LDFLAGS=-lm
 SOURCES=main.c parser.c vectstore.c vectmath.c csvparser.c
 OBJECTS=$(SOURCES:.c=.o)
-EXECUTABLE=matlab-clone
+EXECUTABLE=matlab-clone.exe
 
 all: $(SOURCES) $(EXECUTABLE)
 
