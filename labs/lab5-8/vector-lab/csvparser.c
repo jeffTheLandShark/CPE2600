@@ -8,10 +8,9 @@
  * Name: Leigh Goetsch
  *
  */
-#include "vectstore.h"
 #include "Vect.h"
+#include "vectstore.h"
 
-#include <stdlib.h>
 #include <stdio.h>
 
 void parse_csv(const char *filename) {
@@ -31,7 +30,7 @@ void parse_csv(const char *filename) {
     int result = sscanf(line, "%s, %d, %d, %d", name, &x, &y, &z);
     if (result != 4) {
       printf("File is formatted incorrectly on line: %s\n", line);
-      exit(1);
+      return;
     }
     Vect vect = vectEquals(name, x, y, z);
     assignVect(vect, getVect(name));
@@ -39,4 +38,19 @@ void parse_csv(const char *filename) {
   }
 
   fclose(input_csv);
+}
+
+void output_csv(const char *filename) {
+  FILE *output_csv;
+
+  output_csv = fopen(filename, "wr+");
+  if (!output_csv) {
+    printf("Error opening file: %s\n", filename);
+    return;
+  }
+
+  for (int i = 0; i < getSize(); i++) {
+    Vect vect = fromStorage(i);
+    fprintf(output_csv, "%s, %d, %d, %d\n", vect.name, vect.x, vect.y, vect.z);
+  }
 }
