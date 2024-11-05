@@ -66,6 +66,9 @@ int parse() {
     if (!strcmp(tokens[0], "load")) {
       parse_csv(tokens[1]);
       list();
+    } else if (!strcasecmp(tokens[0], "export")) {
+      output_csv(tokens[1]);
+      list();
     } else {
       invalidMsg();
     }
@@ -127,16 +130,6 @@ int parseCmd(const char *cmd) {
     list();
   } else if (!strcasecmp(cmd, "clear")) {
     clear();
-  } else if (!strcasecmp(cmd, "input")) {
-    printf("File Name: ");
-    char *filename;
-    scanf("%s", filename);
-    parse_csv(filename);
-  } else if (!strcasecmp(cmd, "output")) {
-    printf("File Name: ");
-    char *filename;
-    scanf("%s", filename);
-    output_csv(filename);
   } else {
     display(cmd);
   }
