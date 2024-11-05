@@ -10,3 +10,4 @@
  */
 
 void parse_csv(const char *filename);
+void output_csv(const char *filename);
