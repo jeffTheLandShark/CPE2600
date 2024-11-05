@@ -23,7 +23,7 @@ void parse_csv(const char *filename) {
   }
 
   char line[1024];
-  char *name;
+  char name[20];
   int x, y, z;
   // Read and process each line of the CSV file
   while (fgets(line, sizeof(line), input_csv) != NULL) {
