@@ -10,6 +10,7 @@
  *
  */
 #include "vectstore.h"
+#include "Vect.h"
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -60,6 +61,14 @@ Vect getVect(const char *name) {
     insertVect(vect);
     return vect;
   }
+}
+
+Vect fromStorage(int index) {
+  if (index >= 0 && index < current_max) {
+    return storage[index];
+  }
+  printf("Index %d is out of bounds", index);
+  exit(1);
 }
 
 int findVect(const char *name) {
@@ -131,3 +140,5 @@ Vect vectEquals(const char *name, int x, int y, int z) {
   vect.z = z;
   return vect;
 }
+
+int getSize() { return size; }

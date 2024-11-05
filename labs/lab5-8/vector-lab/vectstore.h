@@ -21,6 +21,8 @@ Vect copyVect(Vect src, Vect dst);
 
 Vect getVect(const char *name);
 
+Vect fromStorage(int index);
+
 int findVect(const char *name);
 
 void insertVect(Vect src);
@@ -36,3 +38,5 @@ void display(const char *name);
 void displayVect(Vect vect);
 
 Vect vectEquals(const char *name, int x, int y, int z);
+
+int getSize();
