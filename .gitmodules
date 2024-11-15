@@ -4,6 +4,3 @@
 [submodule "labs/lab5-8/vector-lab-turney-jeffTheLandShark"]
 	path = labs/lab5-8/vector-lab-turney-jeffTheLandShark
 	url = git@github.com:MSOE-CPE2600/vector-lab-turney-jeffTheLandShark.git
-[submodule "labs/lab3/snake"]
-	path = labs/lab3/snake
-	url = https://github.com/MSOE-Rothe/snake.git
