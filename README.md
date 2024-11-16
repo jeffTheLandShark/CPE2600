@@ -27,7 +27,7 @@ This was provided by the course syllabus:
 
 The files in this repository are organized into the following categories:
 
-```
+```shell
 ├── group_activity/     # group exercises / collaborative projects
 ├── labs/               # weekly lab assignments
 ├── prog_assign/        # programming assignments
