@@ -37,7 +37,6 @@ The files in this repository are organized into the following categories:
 ```
 
 ### Labs
-This section includes lab assignments designed to introduce key concepts in systems programming.
 
 | Lab                             | Path                                              |
 |---------------------------------|---------------------------------------------------|
@@ -55,7 +54,6 @@ This section includes lab assignments designed to introduce key concepts in syst
 | Lab 12 Multithreading           |                                                   |
 
 ### Programming Assignments
-These assignments challenge us to apply concepts learned in lectures and labs to solve real-world systems programming problems:
 
 | Assignment | Description                                                            | Path               |
 |------------|------------------------------------------------------------------------|--------------------|
