@@ -49,7 +49,7 @@ The files in this repository are organized into the following categories:
 | Lab 7 Vector Calculator Update  | `labs/lab5-8/vector-lab-turney-jeffTheLandShark/` |
 | Lab 8 More Git                  | `labs/lab5-8/vector-lab-turney-jeffTheLandShark/` |
 | Lab 9 System Calls              | `labs/lab9/`                                      |
-| Lab 10 Signals                  |                                                   |
+| Lab 10 Signals                  | `labs/lab10/`                                     |
 | Lab 11 Multiprocessing          |                                                   |
 | Lab 12 Multithreading           |                                                   |
 
