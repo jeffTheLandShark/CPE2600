@@ -7,3 +7,6 @@
 [submodule "labs/lab10/signals-turney-jeffTheLandShark"]
 	path = labs/lab10/signals-turney-jeffTheLandShark
 	url = https://github.com/MSOE-CPE2600/signals-turney-jeffTheLandShark.git
+[submodule "labs/lab11/multiprocessing-turney-jeffTheLandShark"]
+	path = labs/lab11/multiprocessing-turney-jeffTheLandShark
+	url = https://github.com/MSOE-CPE2600/multiprocessing-turney-jeffTheLandShark
