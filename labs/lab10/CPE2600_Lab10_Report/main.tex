@@ -124,6 +124,14 @@
 
 \subsection{Handling SIGSEGV}
 
+\textbf{SIGSEGV} - sent to a process when it tries to access memory that it does not have permission to access.
+
+\begin{figure}
+    \centering
+    \includegraphics[width=1\linewidth]{images/SIGSEGV.png}
+    \caption{Because SIGSEGV handles the signal but not the error, the program continuously sends the signal, resulting in an infinite loop}
+\end{figure}
+
 
 
 % \end{multicols}
