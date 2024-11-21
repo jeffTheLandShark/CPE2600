@@ -6,8 +6,11 @@ all: signal_handler
 signal_handler: signal_handler.o
 	$(CC) -o signal_handler signal_handler.o
 
+signal_alarm: signal_alarm.o
+	$(CC) -o signal_alarm signal_alarm.o
+
 clean:
-	rm -f *.o signal_handler
+	rm -f *.o signal_handler signal_alarm
 
 %.o: %.c
 	$(CC) $(CFLAGS) -o $@ $<
