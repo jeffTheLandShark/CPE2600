@@ -43,7 +43,7 @@
     \end{lstlisting}
     \item \textbf{Name and describe one way to send a signal to a process from the command line. Be able to give an example (the command, key combination, etc.) to send a signal.} One way to send a signal to a process from the command line is to use the \texttt{kill} command. For example, to send a \texttt{SIGTERM} signal to a process with a PID of 1234, you could use the following command:
     \begin{lstlisting}[language=bash]
-    kill -15 1234
+    kill -SIGINT 1234
     \end{lstlisting}
 \end{itemize}
 
@@ -85,8 +85,40 @@
 
 \section{Part 2: Working with a Signal Handler}
 
+\subsection{SIGINT in signal\_handler.c}
+\begin{figure}
+    \centering
+    \includegraphics[width=1\linewidth]{images/SIGINT_ctrl_c.png}
+    \caption{SIGINT triggered with CTRL + C}
+\end{figure}
+
+\begin{figure}
+    \centering
+    \includegraphics[width=1\linewidth]{images/SIGINT_kill.png}
+    \caption{SIGINT triggered with kill cmd}
+\end{figure}
+
+\subsection{Exit Outside of Signal Handler}
+
+\begin{figure}
+    \centering
+    \includegraphics[width=1\linewidth]{images/SIGKILL.png}
+    \caption{SIGKILL triggered with kill cmd, see how SIGINT doesn't close the program}
+\end{figure}
+
+\section{Part 3: Signals Sent From the Operating System}
+
+\subsection{Using SIGALRM}
+\begin{itemize}
+    \item \textbf{The \verb|alarm| system call}\\
+    Used to set an alarm for a specified number of seconds. When the alarm goes off, the process receives a \verb|SIGALRM| signal.
+    \item \textbf{The \verb|SIGALRM| signal}\\
+    Sent to a process when the alarm set by the \verb|alarm| system call goes off.
+\end{itemize}
 
 
+
+\subsection{Handling SIGSEGV}
 
 % \end{multicols}
 \end{document}
