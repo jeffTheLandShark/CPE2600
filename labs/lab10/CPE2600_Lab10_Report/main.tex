@@ -132,6 +132,24 @@
     \caption{Because SIGSEGV handles the signal but not the error, the program continuously sends the signal, resulting in an infinite loop}
 \end{figure}
 
+\section{Part 3: Getting Details from a Received Signal}
+
+\textbf{The \verb|sigaction| system call} - used to set up a signal handler for a specific signal. It allows the process to specify a function to be called when the signal is received.
+
+\begin{figure}
+    \centering
+    \includegraphics[width=1\linewidth]{images/SIGUSR1.png}
+    \caption{SIGUSR1 triggered with kill cmd}
+\end{figure}
+
+\section{Part 4: Sending Data with a Signal}
+
+\begin{figure}
+    \centering
+    \includegraphics[width=1\linewidth]{images/sendrecv.png}
+    \caption{Sending and receiving data with a signal}
+\end{figure}
+
 
 
 % \end{multicols}
