@@ -6,6 +6,7 @@
  */
 
 #include "mandel.h"
+#include <bits/types/timer_t.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -40,12 +41,18 @@ void benchmark() {
   double runtimes[num_values];
   for (int i = 0; i < num_values; i++) {
     num_children = benchmark_values[i];
-    printf("Running benchmark with %d children\n", num_children);
-    clock_t start = clock();
+    struct timespec start, end;
+
+    printf("Benchmarking with %d children\n", num_children);
+
+    clock_gettime(CLOCK_MONOTONIC, &start);
     fly_in(num_children, xscale, yscale, image_width, image_height, max,
            outfile);
-    clock_t end = clock();
-    runtimes[i] = (double)(end - start) / CLOCKS_PER_SEC;
+
+    clock_gettime(CLOCK_MONOTONIC, &end);
+    double runtime =
+        (end.tv_sec - start.tv_sec) + (end.tv_nsec - start.tv_nsec) / 1e9;
+    runtimes[i] = runtime;
   }
 
   FILE *fp = fopen("benchmarking/benchmark.csv", "w");
