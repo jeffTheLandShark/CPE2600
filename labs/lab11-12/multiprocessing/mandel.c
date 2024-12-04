@@ -26,7 +26,7 @@ void fly_in(int num_children, double xscale, double yscale, int image_width,
   double ycenter = 2.0 / 3.0;
 
   int living_children = 0;
-  int max_calc = max;
+  int max_scale;
 
   for (i = 0; i < NUM_IMAGES; i++) {
     if (living_children >= num_children) {
@@ -37,18 +37,19 @@ void fly_in(int num_children, double xscale, double yscale, int image_width,
     if (pid == 0) {
       char filename[100];
       sprintf(filename, "%s%02d.jpg", outfile, i);
-      scale = (double)(NUM_IMAGES - i) /
-              (double)NUM_IMAGES; // exponential scale from 0 to 1
+      scale =
+          (double)(NUM_IMAGES - i) / (double)NUM_IMAGES; // scale from 1 to 0
+      max_scale = (1 - scale) / 0.4 + 1;
       scale = scale * scale;
       mandel(xcenter, ycenter, xscale * scale, yscale * scale, image_width,
-             image_height, max, filename);
+             image_height, max * max_scale, filename);
       exit(0);
     } else {
       living_children++;
     }
   }
 
-  for (i = 0; i < num_children; i++) {
+  for (i = living_children; i > 0; i--) {
     wait(&status);
   }
 }
