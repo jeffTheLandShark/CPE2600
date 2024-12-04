@@ -1,12 +1,8 @@
 /*
  * @file mandelmovie.c
- * @brief: Use child processes to generate 50 images
- *         by progressively changing one or more image
- *         parameters (e.g., the scale, the center,
- *         the maximum number of iterations, etc.)
- *         Must allow the number of child processes to
- *         be specified on the command line.
- *         The command line must be interpreted using the getopt function.
+ * @brief: This file is used to create a movie of the mandelbrot set
+ * @note: to combine the images into a movie, run the following command:
+ *       ffmpeg -i movie/mandel%02d.jpg movie.mp4
  */
 
 #include "mandel.h"
