@@ -11,10 +11,11 @@
 #include <stdlib.h>
 #include <unistd.h>
 
+// main similar to mandel.c original main
 int main(int argc, char *argv[]) {
   char c;
 
-  const char *outfile = "movie/mandel";
+  const char *outfile = "movie/mandel"; // default output file
 
   double xscale = 4;
   double yscale = 0; // calc later
@@ -23,6 +24,7 @@ int main(int argc, char *argv[]) {
   int max = 1000;
   int num_children = 1;
 
+  // parse command line arguments
   while ((c = getopt(argc, argv, "s:W:H:m:o:n:h")) != -1) {
     switch (c) {
     case 's':
@@ -52,8 +54,9 @@ int main(int argc, char *argv[]) {
     }
   }
 
-  yscale = xscale * image_height / image_width;
+  yscale = xscale * image_height / image_width; // calculate yscale
 
+  // call fly_in function with the given parameters to create the movie
   fly_in(num_children, xscale, yscale, image_width, image_height, max, outfile);
 
   return 0;
