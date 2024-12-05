@@ -6,6 +6,10 @@
 //  Converted to use jpg instead of BMP and other minor changes
 //
 ///
+
+// edited by: Leigh Goetsch
+// changes: created new function fly_in
+
 #include "mandel.h"
 #include "jpegrw.h"
 #include <stdio.h>
@@ -15,6 +19,17 @@
 
 #define NUM_IMAGES 50
 
+/**
+ * @brief Generate a series of images of the Mandelbrot set.
+ *
+ * @param num_children The number of child processes to spawn.
+ * @param xscale The scale of the image in Mandelbrot coordinates (X-axis).
+ * @param yscale The scale of the image in Mandelbrot coordinates (Y-axis).
+ * @param image_width The width of the image in pixels.
+ * @param image_height The height of the image in pixels.
+ * @param max The maximum number of iterations per point.
+ * @param outfile The output file name.
+ */
 void fly_in(int num_children, double xscale, double yscale, int image_width,
             int image_height, int max, const char *outfile) {
   int i;
@@ -28,31 +43,47 @@ void fly_in(int num_children, double xscale, double yscale, int image_width,
   int living_children = 0;
   int max_scale;
 
+  // for each image
   for (i = 0; i < NUM_IMAGES; i++) {
+    // if we have the max number of children, wait for one to finish
     if (living_children >= num_children) {
       wait(&status);
+      // decrement the number of living children since one has finished
       living_children--;
     }
+
+    // fork a new child process
     pid = fork();
+
+    // if we are the child, generate the image
     if (pid == 0) {
       char filename[100];
-      sprintf(filename, "%s%02d.jpg", outfile, i);
+      sprintf(filename, "%s%02d.jpg", outfile, i); // create the filename
       scale =
           (double)(NUM_IMAGES - i) / (double)NUM_IMAGES; // scale from 1 to 0
-      max_scale = (1 - scale) / 0.4 + 1;
-      scale = scale * scale;
+      max_scale =
+          (1 - scale) / 0.4 + 1; // sweet spot for scaling max iterations
+      scale =
+          scale * scale; // scaling exponentially to zoom through empty space
+
+      // generate the image
       mandel(xcenter, ycenter, xscale * scale, yscale * scale, image_width,
              image_height, max * max_scale, filename);
+
       exit(0);
     } else {
+      // increment the number of living children
       living_children++;
     }
   }
 
+  // wait for all children to finish
   for (i = living_children; i > 0; i--) {
     wait(&status);
   }
 }
+
+// below are the functions from the original mandel.c file
 
 void mandel(double xcenter, double ycenter, double xscale, double yscale,
             int image_width, int image_height, int max, const char *outfile) {

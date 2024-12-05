@@ -7,6 +7,8 @@
 //
 ///
 
+// @note: created so that mandel.c functions can be used in other files
+
 #include "jpegrw.h"
 
 // local routines
