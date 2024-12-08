@@ -24,3 +24,5 @@ void mandel(double xcenter, double ycenter, double xscale, double yscale,
 
 void fly_in(int num_children, double xscale, double yscale, int image_width,
             int image_height, int max, int num_threads, const char *outfile);
+
+void *compute_region(void *args);
