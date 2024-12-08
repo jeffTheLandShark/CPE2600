@@ -31,7 +31,7 @@
  * @param outfile The output file name.
  */
 void fly_in(int num_children, double xscale, double yscale, int image_width,
-            int image_height, int max, const char *outfile) {
+            int image_height, int max, int num_threads, const char *outfile) {
   int i;
   double scale;
   int status;
@@ -68,7 +68,7 @@ void fly_in(int num_children, double xscale, double yscale, int image_width,
 
       // generate the image
       mandel(xcenter, ycenter, xscale * scale, yscale * scale, image_width,
-             image_height, max * max_scale, filename);
+             image_height, max * max_scale, num_threads, filename);
 
       exit(0);
     } else {
@@ -86,7 +86,8 @@ void fly_in(int num_children, double xscale, double yscale, int image_width,
 // below are the functions from the original mandel.c file
 
 void mandel(double xcenter, double ycenter, double xscale, double yscale,
-            int image_width, int image_height, int max, const char *outfile) {
+            int image_width, int image_height, int max, int num_threads,
+            const char *outfile) {
 
   // Calculate y scale based on x scale (settable) and image sizes in X and Y
   // (settable)
@@ -100,7 +101,7 @@ void mandel(double xcenter, double ycenter, double xscale, double yscale,
 
   // Compute the Mandelbrot image
   compute_image(img, xcenter - xscale / 2, xcenter + xscale / 2,
-                ycenter - yscale / 2, ycenter + yscale / 2, max);
+                ycenter - yscale / 2, ycenter + yscale / 2, max, num_threads);
 
   // Save the image in the stated file.
   storeJpegImageFile(img, outfile);
@@ -145,7 +146,7 @@ Scale the image to the range (xmin-xmax,ymin-ymax), limiting iterations to
 */
 
 void compute_image(imgRawImage *img, double xmin, double xmax, double ymin,
-                   double ymax, int max) {
+                   double ymax, int max, int num_threads) {
   int i, j;
 
   int width = img->width;

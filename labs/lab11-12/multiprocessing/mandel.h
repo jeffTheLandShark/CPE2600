@@ -15,11 +15,12 @@
 int iteration_to_color(int i, int max);
 int iterations_at_point(double x, double y, int max);
 void compute_image(imgRawImage *img, double xmin, double xmax, double ymin,
-                   double ymax, int max);
+                   double ymax, int max, int num_threads);
 void show_help();
 
 void mandel(double xcenter, double ycenter, double xscale, double yscale,
-            int image_width, int image_height, int max, const char *outfile);
+            int image_width, int image_height, int max, int num_threads,
+            const char *outfile);
 
 void fly_in(int num_children, double xscale, double yscale, int image_width,
-            int image_height, int max, const char *outfile);
+            int image_height, int max, int num_threads, const char *outfile);
