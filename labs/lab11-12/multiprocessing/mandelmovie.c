@@ -26,7 +26,7 @@ int main(int argc, char *argv[]) {
   int num_threads = 1;
 
   // parse command line arguments
-  while ((c = getopt(argc, argv, "s:W:H:m:o:n:h:t")) != -1) {
+  while ((c = getopt(argc, argv, "s:W:H:m:o:n:t:h")) != -1) {
     switch (c) {
     case 's':
       xscale = atof(optarg);
@@ -48,9 +48,10 @@ int main(int argc, char *argv[]) {
       break;
     case 't':
       num_threads = atoi(optarg);
+      break;
     default:
       printf("Usage: %s [-s scale] [-W width] [-H "
-             "height] [-m max] [-o outfile] [-n num_children]\n",
+             "height] [-m max] [-o outfile] [-n num_children] [-t num_threads]\n",
              argv[0]);
       exit(1);
       break;
