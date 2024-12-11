@@ -11,7 +11,7 @@ double actual_position, int manual_accel, int manual_break, int* command_accel, 
                 *command_break = 100;
             }
         } else if (abs(actual_speed - speed_setp) > 3) { //cruise control will get within 5 mph
-            int percent = (abs(actual_speed - speed_setp) - 3) * 5;
+            int percent = (fabs(actual_speed - speed_setp) - 3) * 5;
             if (actual_speed - speed_setp > 0) { //too fast
                 *command_break = percent;
                 *command_accel = 0;
