@@ -1,10 +1,10 @@
 
 /**********************************************
- *  Filename: unix_socket_read2.c
+ *  Filename: unix_socket_read.c
  *  Description: using unix sockets
  *  Author: Bob Turney
  *  Date: 3/4/2020
- *  Note: gcc -o unix_socket_write unix_socket_read.c
+ *  Note: gcc -o unix_socket_read unix_socket_read.c
  *  bi directional communications
  ***********************************************/
 #include <stdio.h>
