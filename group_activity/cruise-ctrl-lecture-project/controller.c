@@ -1,7 +1,7 @@
 #include <math.h>
 
-void controller(int cruise, double speed_setp, double actual_speed, int position_setp,
-int actual_position, int manual_accel, int manual_break, int* command_accel, int* command_break) {
+void controller(int cruise, double speed_setp, double actual_speed, double position_setp,
+double actual_position, int manual_accel, int manual_break, int* command_accel, int* command_break) {
     if (cruise && !manual_accel && !manual_break) { //active
         if (actual_position - position_setp < 0) { //car is too close
             *command_accel = 0;
