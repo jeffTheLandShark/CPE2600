@@ -5,7 +5,7 @@ double actual_position, int manual_accel, int manual_break, int* command_accel, 
     if (cruise && !manual_accel && !manual_break) { //active
         if (actual_position - position_setp < 0) { //car is too close
             *command_accel = 0;
-            *command_break = 25 + (int) (100.0 / (position - position_setp));
+            *command_break = 25 + (int) (100.0 / (actual_position - position_setp));
 
             if(*command_break > 100) {
                 *command_break = 100;
