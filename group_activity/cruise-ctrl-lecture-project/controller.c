@@ -21,7 +21,7 @@ void controller(int cruise, double speed_setp, double actual_speed,
       }
     } else if (fabs(actual_speed - speed_setp) >
                3) { // cruise control will get within 5 mph
-      int percent = (ffabs(actual_speed - speed_setp) - 3) * 5;
+      int percent = (fabs(actual_speed - speed_setp) - 3) * 5;
       if (percent > 100) {
         percent = 100;
       }
