@@ -134,6 +134,16 @@ int main() {
             }
           }
         } else {
+
+          // Notify others that this user has left
+          char leave_message[BUFFER_SIZE + 50];
+          snprintf(leave_message, sizeof(leave_message),
+                   "%s has left the chat.\n", usernames[i]);
+          for (int j = 0; j <= max_fd; j++) {
+            if (FD_ISSET(j, &read_fds) && j != server_fd && j != i) {
+              write(j, leave_message, strlen(leave_message));
+            }
+          }
           free(usernames[i]);
           usernames[i] = NULL;
           close(i);
