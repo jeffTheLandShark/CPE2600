@@ -6,6 +6,7 @@
  *  @author Leigh Goetsch, Alex Roe-Gulke
  *  @note gcc -o unix_socket_chat_server unix_socket_chat_server.c
  ***********************************************/
+#include <signal.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -18,12 +19,32 @@
 #define SOCKET_PATH "/tmp/chatroom"
 #define BUFFER_SIZE 150
 
+int server_fd, client_fd, max_fd;
+char *usernames[FD_SETSIZE] = {NULL};
+
+void exit_handler() {
+  close(server_fd);
+  unlink(SOCKET_PATH);
+  for (int i = 0; i <= max_fd; i++) {
+    if (usernames[i] != NULL) {
+      free(usernames[i]);
+    }
+  }
+}
+
+void sigint_handler(int sig) {
+  exit_handler();
+  exit(EXIT_SUCCESS);
+}
+
 int main() {
-  int server_fd, client_fd, max_fd;
+  atexit(exit_handler);
+  // Register the SIGINT handler
+  signal(SIGINT, sigint_handler);
+
   struct sockaddr_un server_addr;
   fd_set read_fds;
   char buffer[BUFFER_SIZE];
-  char *usernames[FD_SETSIZE] = {NULL};
 
   // Create socket
   if ((server_fd = socket(AF_UNIX, SOCK_STREAM, 0)) == -1) {
@@ -86,6 +107,8 @@ int main() {
         username[bytes_read] = '\0';
         printf("Username received: %s\n", username);
       } else {
+        free(usernames[client_fd]);
+        usernames[client_fd] = NULL;
         close(client_fd);
         FD_CLR(client_fd, &read_fds);
       }
@@ -111,16 +134,14 @@ int main() {
             }
           }
         } else {
+          free(usernames[i]);
+          usernames[i] = NULL;
           close(i);
           FD_CLR(i, &read_fds);
         }
       }
     }
   }
-
-  // Clean up
-  close(server_fd);
-  unlink(SOCKET_PATH);
 
   return 0;
 }

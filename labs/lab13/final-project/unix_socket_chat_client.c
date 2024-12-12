@@ -6,6 +6,7 @@
  *  @note: gcc -o unix_socket_chat_client unix_socket_chat_client.c
  ***********************************************/
 
+#include <signal.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -18,8 +19,23 @@
 #define SOCKET_PATH "/tmp/chatroom"
 #define BUFFER_SIZE 150
 
+int client_fd, max_fd;
+
+void exit_handler() {
+  if (client_fd != -1) {
+    close(client_fd);
+  }
+}
+
+void sigint_handler(int sig) {
+  exit_handler();
+  exit(EXIT_SUCCESS);
+}
+
 int main(int argc, char *argv[]) {
-  int client_fd, max_fd, activity;
+  atexit(exit_handler);
+  // Register the SIGINT handler
+  signal(SIGINT, sigint_handler);
   struct sockaddr_un server_addr;
   fd_set read_fds;
   char buffer[BUFFER_SIZE];
@@ -68,9 +84,8 @@ int main(int argc, char *argv[]) {
 
   while (1) {
     fd_set temp_fds = read_fds;
-    activity = select(max_fd + 1, &temp_fds, NULL, NULL, NULL);
 
-    if (activity < 0) {
+    if (select(max_fd + 1, &temp_fds, NULL, NULL, NULL) < 0) {
       perror("select error");
       close(client_fd);
       exit(EXIT_FAILURE);
@@ -79,10 +94,16 @@ int main(int argc, char *argv[]) {
     // Check for user input
     if (FD_ISSET(STDIN_FILENO, &temp_fds)) {
       fgets(buffer, sizeof(buffer), stdin);
+      
       if (write(client_fd, buffer, strlen(buffer)) == -1) {
         perror("write error");
         close(client_fd);
         exit(EXIT_FAILURE);
+      }
+      
+      if (strcmp(buffer, "exit") == 0) {
+        close(client_fd);
+        exit(EXIT_SUCCESS);
       }
     }
 
@@ -99,9 +120,6 @@ int main(int argc, char *argv[]) {
       }
     }
   }
-
-  // Clean up
-  close(client_fd);
 
   return 0;
 }
