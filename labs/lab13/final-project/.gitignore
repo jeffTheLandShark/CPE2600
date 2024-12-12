@@ -1,0 +1,9 @@
+# Ignore object files and executables
+*.o
+*.out
+*.exe
+
+# Ignore temporary files
+*.tmp
+*.temp
+*.swp
