@@ -94,17 +94,17 @@ int main(int argc, char *argv[]) {
     // Check for user input
     if (FD_ISSET(STDIN_FILENO, &temp_fds)) {
       fgets(buffer, sizeof(buffer), stdin);
-      
+      if (strcmp(buffer, "exit\n") == 0) {
+        close(client_fd);
+        exit(EXIT_SUCCESS);
+      }
       if (write(client_fd, buffer, strlen(buffer)) == -1) {
         perror("write error");
         close(client_fd);
         exit(EXIT_FAILURE);
       }
+
       
-      if (strcmp(buffer, "exit") == 0) {
-        close(client_fd);
-        exit(EXIT_SUCCESS);
-      }
     }
 
     // Check for messages from the server
