@@ -1,8 +1,5 @@
 #include <stdio.h>
-
-// Function prototypes
-int convertADC(float positionVoltage, float speedVoltage,float *adcFeetPosition,float *adcMPHSpeed);
-float convertDAC(float accelerationPercentage, float breakPercentage, float *accelerationVoltage,float *breakVoltage);
+#include "dataInterface.h"
 
 #define MAXINTVALUE 1023
 

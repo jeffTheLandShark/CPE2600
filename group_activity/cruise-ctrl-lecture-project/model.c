@@ -9,6 +9,7 @@
  *****************************************************************************/
 
 #include <stdio.h>
+#include "model.h"
 
 // Function to model the cruise controller
 void model(double accel, double brake, double prev_speed, double prev_position, double *actual_speed, double *actual_position) {
