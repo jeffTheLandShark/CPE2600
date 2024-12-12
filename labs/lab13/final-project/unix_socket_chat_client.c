@@ -21,12 +21,13 @@
 
 int client_fd, max_fd;
 
+// Ensures no memory leak when exiting program
 void exit_handler() {
   if (client_fd != -1) {
     close(client_fd);
   }
 }
-
+// Singal handler so the program exits gracefully
 void sigint_handler(int sig) {
   exit_handler();
   exit(EXIT_SUCCESS);
@@ -41,6 +42,7 @@ int main(int argc, char *argv[]) {
   char buffer[BUFFER_SIZE];
   char username[BUFFER_SIZE];
 
+  // If username was given, apply it
   if (argc == 1) {
     strcpy(username, "Guest");
   } else if (argc == 2) {
@@ -82,6 +84,7 @@ int main(int argc, char *argv[]) {
   FD_SET(STDIN_FILENO, &read_fds);
   max_fd = client_fd;
 
+  //Program loop
   while (1) {
     fd_set temp_fds = read_fds;
 

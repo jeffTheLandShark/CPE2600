@@ -22,6 +22,7 @@
 int server_fd, client_fd, max_fd;
 char *usernames[FD_SETSIZE] = {NULL};
 
+// Ensures no memory leak when exiting program
 void exit_handler() {
   close(server_fd);
   unlink(SOCKET_PATH);
@@ -31,7 +32,7 @@ void exit_handler() {
     }
   }
 }
-
+// Singal handler so the program exits gracefully
 void sigint_handler(int sig) {
   exit_handler();
   exit(EXIT_SUCCESS);
@@ -57,7 +58,8 @@ int main() {
   server_addr.sun_family = AF_UNIX;
   strncpy(server_addr.sun_path, SOCKET_PATH, sizeof(server_addr.sun_path) - 1);
 
-  unlink(SOCKET_PATH); // Remove any existing file
+  // Remove any existing file
+  unlink(SOCKET_PATH); 
   if (bind(server_fd, (struct sockaddr *)&server_addr, sizeof(server_addr)) ==
       -1) {
     perror("bind error");
@@ -79,6 +81,7 @@ int main() {
   FD_SET(server_fd, &read_fds);
   max_fd = server_fd;
 
+  // Program loop
   while (1) {
     fd_set temp_fds = read_fds;
 
@@ -144,6 +147,7 @@ int main() {
               write(j, leave_message, strlen(leave_message));
             }
           }
+          // Free memory
           free(usernames[i]);
           usernames[i] = NULL;
           close(i);
