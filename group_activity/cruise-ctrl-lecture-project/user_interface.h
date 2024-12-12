@@ -8,3 +8,4 @@
 
 int user_interface();
 int check_user_value(int value);
+int change_value_mode(int option);
