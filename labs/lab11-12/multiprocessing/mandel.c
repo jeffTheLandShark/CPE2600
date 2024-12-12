@@ -12,6 +12,8 @@
 
 #include "mandel.h"
 #include "jpegrw.h"
+#include "thread_args.h"
+#include <pthread.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <sys/wait.h>
@@ -31,7 +33,7 @@
  * @param outfile The output file name.
  */
 void fly_in(int num_children, double xscale, double yscale, int image_width,
-            int image_height, int max, const char *outfile) {
+            int image_height, int max, int num_threads, const char *outfile) {
   int i;
   double scale;
   int status;
@@ -68,7 +70,7 @@ void fly_in(int num_children, double xscale, double yscale, int image_width,
 
       // generate the image
       mandel(xcenter, ycenter, xscale * scale, yscale * scale, image_width,
-             image_height, max * max_scale, filename);
+             image_height, max * max_scale, num_threads, filename);
 
       exit(0);
     } else {
@@ -86,7 +88,8 @@ void fly_in(int num_children, double xscale, double yscale, int image_width,
 // below are the functions from the original mandel.c file
 
 void mandel(double xcenter, double ycenter, double xscale, double yscale,
-            int image_width, int image_height, int max, const char *outfile) {
+            int image_width, int image_height, int max, int num_threads,
+            const char *outfile) {
 
   // Calculate y scale based on x scale (settable) and image sizes in X and Y
   // (settable)
@@ -100,7 +103,7 @@ void mandel(double xcenter, double ycenter, double xscale, double yscale,
 
   // Compute the Mandelbrot image
   compute_image(img, xcenter - xscale / 2, xcenter + xscale / 2,
-                ycenter - yscale / 2, ycenter + yscale / 2, max);
+                ycenter - yscale / 2, ycenter + yscale / 2, max, num_threads);
 
   // Save the image in the stated file.
   storeJpegImageFile(img, outfile);
@@ -145,29 +148,45 @@ Scale the image to the range (xmin-xmax,ymin-ymax), limiting iterations to
 */
 
 void compute_image(imgRawImage *img, double xmin, double xmax, double ymin,
-                   double ymax, int max) {
+                   double ymax, int max, int num_threads) {
+  pthread_t threads[num_threads];
+  thread_args targs[num_threads];
+
+  for (int i = 0; i < num_threads; i++) {
+    targs[i].start = i * img->height / num_threads;
+    targs[i].end = (i + 1) * img->height / num_threads;
+    targs[i].img = img;
+    targs[i].xmin = xmin;
+    targs[i].xmax = xmax;
+    targs[i].ymin = ymin;
+    targs[i].ymax = ymax;
+    targs[i].max = max;
+
+    pthread_create(&threads[i], NULL, compute_region, (void *)&targs[i]);
+  }
+
+  for (int i = 0; i < num_threads; i++) {
+    pthread_join(threads[i], NULL);
+  }
+}
+
+void *compute_region(void *args) {
+  thread_args *targs = (thread_args *)args;
   int i, j;
+  int width = targs->img->width;
+  int height = targs->img->height;
 
-  int width = img->width;
-  int height = img->height;
-
-  // For every pixel in the image...
-
-  for (j = 0; j < height; j++) {
-
+  for (j = targs->start; j < targs->end; j++) {
     for (i = 0; i < width; i++) {
+      double x = targs->xmin + i * (targs->xmax - targs->xmin) / width;
+      double y = targs->ymin + j * (targs->ymax - targs->ymin) / height;
 
-      // Determine the point in x,y space for that pixel.
-      double x = xmin + i * (xmax - xmin) / width;
-      double y = ymin + j * (ymax - ymin) / height;
-
-      // Compute the iterations at that point.
-      int iters = iterations_at_point(x, y, max);
-
-      // Set the pixel in the bitmap.
-      setPixelCOLOR(img, i, j, iteration_to_color(iters, max));
+      int iters = iterations_at_point(x, y, targs->max);
+      setPixelCOLOR(targs->img, i, j, iteration_to_color(iters, targs->max));
     }
   }
+
+  pthread_exit(NULL);
 }
 
 /*

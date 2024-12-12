@@ -16,18 +16,100 @@
 #include <time.h>
 #include <unistd.h>
 
-static void benchmark();
-static void graph();
+static void benchmark_children();
+static void benchmark_threads();
+static void benchmark_loop();
+static void benchmark(int mode, int num_children, int num_threads,
+                      char *benchmarkfile);
+static void graph(char *outfile);
+static void graph_both(char *outfile);
+static void graph_all();
 
-int main(void) {
-  // Benchmark the mandelbrot function
-  benchmark();
-  // Graph the results
-  graph();
+const int benchmark_values[] = {1, 2, 5, 10, 20};
+
+int main(int argc, char *argv[]) {
+  if (argc != 2) {
+    benchmark_children();
+    benchmark_threads();
+    graph_both("benchmarking/both");
+    return 0;
+  }
+
+  int mode = atoi(argv[1]);
+  if (mode == 1) {
+    benchmark_children();
+  } else if (mode == 2) {
+    benchmark_threads();
+  } else if (mode == 3) {
+    // benchmark_loop();
+    graph_all();
+  } else {
+    fprintf(stderr, "Invalid mode\n");
+    exit(1);
+  }
+
   return 0;
 }
 
-void benchmark() {
+void benchmark_loop() {
+  for (int i = 0; i < 5; i++) {
+    int value = benchmark_values[i];
+    char children_filename[256];
+    char threads_filename[256];
+    sprintf(children_filename, "benchmarking/children_%d", i);
+    sprintf(threads_filename, "benchmarking/threads_%d", i);
+
+    benchmark(1, value, 1, children_filename);
+    benchmark(2, 1, value, threads_filename);
+  }
+}
+
+void graph_all() {
+  printf("Graphing all results to %s.png\n", "benchmarking/all");
+  // Use gnuplot to graph the results using cmd line commands
+  FILE *fp = popen("gnuplot", "w");
+  if (fp == NULL) {
+    perror("popen");
+    exit(1);
+  }
+
+  fprintf(fp, "set terminal png\n");                        // file type png
+  fprintf(fp, "set output 'benchmarking/all.png'\n");       // file name
+  fprintf(fp, "set title 'Mandelbrot Benchmark All'\n");    // title
+  fprintf(fp, "set xlabel 'Number of Children/Threads'\n"); // x-axis label
+  fprintf(fp, "set ylabel 'Runtime (s)'\n");                // y-axis label
+  fprintf(fp, "set datafile separator ','\n"); // csv file separator
+  fprintf(fp, "plot ");
+  for (int i = 0; i < 5; i++) {
+    fprintf(fp,
+            "'benchmarking/children_%d.csv' using 1:2 with linespoints title "
+            "'%d Thread(s)', ",
+            i, benchmark_values[i]);
+    fprintf(fp,
+            "'benchmarking/threads_%d.csv' using 1:2 with linespoints title "
+            "'%d Child(ren)'",
+            i, benchmark_values[i]);
+    if (i < 4) {
+      fprintf(fp, ", ");
+    }
+  }
+  fprintf(fp, "\n");
+  fprintf(fp, "quit\n");
+
+  pclose(fp);
+}
+
+void benchmark_children() {
+  benchmark(1, 1, 1, "benchmarking/children");
+  graph("benchmarking/children");
+}
+void benchmark_threads() {
+  benchmark(2, 1, 1, "benchmarking/threads");
+  graph("benchmarking/threads");
+}
+
+void benchmark(int mode, int num_children, int num_threads,
+               char *benchmarkfile) {
   int benchmark_values[] = {1, 2, 5, 10, 20};
 
   // Number of values in the benchmark_values array
@@ -40,7 +122,6 @@ void benchmark() {
   int image_width = 1000;
   int image_height = 1000;
   int max = 1000;
-  int num_children = 1;
 
   int yscale = xscale * image_height / image_width;
   // *****************************************************
@@ -50,12 +131,17 @@ void benchmark() {
 
   // run benchmarks
   for (int i = 0; i < num_values; i++) {
-    num_children = benchmark_values[i];
-    printf("Benchmarking with %d children\n", num_children);
+    if (mode == 1) {
+      num_children = benchmark_values[i];
+      printf("Benchmarking with %d children\n", num_children);
+    } else {
+      num_threads = benchmark_values[i];
+      printf("Benchmarking with %d threads\n", num_threads);
+    }
 
     clock_gettime(CLOCK_MONOTONIC, &start); // start
     fly_in(num_children, xscale, yscale, image_width, image_height, max,
-           outfile); // run the mandelbrot function
+           num_threads, outfile); // run the mandelbrot function
 
     clock_gettime(CLOCK_MONOTONIC, &end); // end
 
@@ -66,13 +152,20 @@ void benchmark() {
   }
 
   // write the results to a csv file
-  FILE *fp = fopen("benchmarking/benchmark.csv", "w");
+  char filename[256];
+  sprintf(filename, "%s.csv", benchmarkfile);
+  printf("Writing results to %s\n", filename);
+  FILE *fp = fopen(filename, "w");
   if (fp == NULL) {
     perror("fopen");
     exit(1);
   }
 
-  fprintf(fp, "num_children,runtime\n");
+  if (mode == 1) {
+    fprintf(fp, "Children,Runtime\n");
+  } else {
+    fprintf(fp, "Threads,Runtime\n");
+  }
   for (int i = 0; i < num_values; i++) {
     fprintf(fp, "%d,%f\n", benchmark_values[i], runtimes[i]);
   }
@@ -80,7 +173,8 @@ void benchmark() {
   fclose(fp);
 }
 
-void graph() {
+void graph(char *outfile) {
+  printf("Graphing results to %s.png\n", outfile);
   // Use gnuplot to graph the results using cmd line commands
   FILE *fp = popen("gnuplot", "w");
   if (fp == NULL) {
@@ -88,13 +182,35 @@ void graph() {
     exit(1);
   }
 
-  fprintf(fp, "set terminal png\n");                        // file type png
-  fprintf(fp, "set output 'benchmarking/benchmark.png'\n"); // file name
-  fprintf(fp, "set title 'Mandelbrot Benchmark'\n");        // title
-  fprintf(fp, "set xlabel 'Number of Children'\n");         // x-axis label
-  fprintf(fp, "set ylabel 'Runtime (s)'\n");                // y-axis label
-  fprintf(fp, "set datafile separator ','\n"); // csv file separator
-  fprintf(fp, "plot 'benchmarking/benchmark.csv' using 1:2 with linespoints\n");
+  fprintf(fp, "set terminal png\n");                 // file type png
+  fprintf(fp, "set output '%s.png'\n", outfile);     // file name
+  fprintf(fp, "set title 'Mandelbrot Benchmark'\n"); // title
+  fprintf(fp, "set xlabel 'Number of Children'\n");  // x-axis label
+  fprintf(fp, "set ylabel 'Runtime (s)'\n");         // y-axis label
+  fprintf(fp, "set datafile separator ','\n");       // csv file separator
+  fprintf(fp, "plot '%s.csv' using 1:2 with linespoints\n", outfile);
+  fprintf(fp, "quit\n");
+
+  pclose(fp);
+}
+
+void graph_both(char *outfile) {
+  printf("Graphing results to %s.png\n", outfile);
+  // Use gnuplot to graph the results using cmd line commands
+  FILE *fp = popen("gnuplot", "w");
+  if (fp == NULL) {
+    perror("popen");
+    exit(1);
+  }
+
+  fprintf(fp, "set terminal png\n");                 // file type png
+  fprintf(fp, "set output '%s.png'\n", outfile);     // file name
+  fprintf(fp, "set title 'Mandelbrot Benchmark'\n"); // title
+  fprintf(fp, "set xlabel 'Number of Children'\n");  // x-axis label
+  fprintf(fp, "set ylabel 'Runtime (s)'\n");         // y-axis label
+  fprintf(fp, "set datafile separator ','\n");       // csv file separator
+  fprintf(fp, "plot 'benchmarking/children.csv' using 1:2 with linespoints, "
+              "'benchmarking/threads.csv' using 1:2 with linespoints\n");
   fprintf(fp, "quit\n");
 
   pclose(fp);
