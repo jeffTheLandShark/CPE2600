@@ -23,13 +23,14 @@ int server_fd, client_fd, max_fd;
 char *usernames[FD_SETSIZE] = {NULL};
 
 void exit_handler() {
-  close(server_fd);
-  unlink(SOCKET_PATH);
   for (int i = 0; i <= max_fd; i++) {
     if (usernames[i] != NULL) {
       free(usernames[i]);
+      usernames[i] = NULL;
     }
   }
+  close(server_fd);
+  unlink(SOCKET_PATH);
 }
 
 void sigint_handler(int sig) {
@@ -107,11 +108,10 @@ int main() {
         username[bytes_read] = '\0';
         printf("Username received: %s\n", username);
       } else {
-        free(usernames[client_fd]);
-        usernames[client_fd] = NULL;
         close(client_fd);
-        FD_CLR(client_fd, &read_fds);
+        continue;
       }
+
       usernames[client_fd] = strdup(username);
 
       // Notify others that this user has joined
@@ -131,7 +131,7 @@ int main() {
         int bytes_read = read(i, buffer, sizeof(buffer) - 1);
         if (bytes_read > 0) {
           buffer[bytes_read] = '\0';
-          printf("Received from %s: %s\n", usernames[i], buffer);
+          printf("Received from %s: %s", usernames[i], buffer);
 
           // Prepare the message with the sender's identifier
           char message[BUFFER_SIZE + 50];
