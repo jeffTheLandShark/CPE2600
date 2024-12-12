@@ -1,4 +1,4 @@
-# System Programming Lab 11 Multiprocessing
+# System Programming Lab 11 Multiprocessing & Lab 12 Multithreading
 ## Repo Guide
 
 - Lab reports are in the `/reports` folder
