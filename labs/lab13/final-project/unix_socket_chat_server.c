@@ -113,6 +113,16 @@ int main() {
         FD_CLR(client_fd, &read_fds);
       }
       usernames[client_fd] = strdup(username);
+
+      // Notify others that this user has joined
+      char join_message[BUFFER_SIZE + 50];
+      snprintf(join_message, sizeof(join_message), "%s has joined the chat.\n",
+               username);
+      for (int j = 0; j <= max_fd; j++) {
+        if (FD_ISSET(j, &read_fds) && j != server_fd && j != client_fd) {
+          write(j, join_message, strlen(join_message));
+        }
+      }
     }
 
     // Check for data from clients
@@ -130,7 +140,7 @@ int main() {
           // Echo the message back to all clients
           for (int j = 0; j <= max_fd; j++) {
             if (FD_ISSET(j, &read_fds) && j != server_fd && j != i) {
-              write(j, message, strlen(message));
+              write(j, message, strlen(message) - 1);
             }
           }
         } else {
@@ -144,8 +154,7 @@ int main() {
               write(j, leave_message, strlen(leave_message));
             }
           }
-          free(usernames[i]);
-          usernames[i] = NULL;
+          printf("User left: %s\n", usernames[i]);
           close(i);
           FD_CLR(i, &read_fds);
         }
