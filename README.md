@@ -50,8 +50,9 @@ The files in this repository are organized into the following categories:
 | Lab 8 More Git                  | `labs/lab5-8/vector-lab-turney-jeffTheLandShark/` |
 | Lab 9 System Calls              | `labs/lab9/`                                      |
 | Lab 10 Signals                  | `labs/lab10/`                                     |
-| Lab 11 Multiprocessing          | `labs/lab11`                                      |
-| Lab 12 Multithreading           |                                                   |
+| Lab 11 Multiprocessing          | `labs/lab11-12/`                                  |
+| Lab 12 Multithreading           | `labs/lab11-12/`                                  |
+| Lab 13 Final Project            | `labs/lab13/`                                     |
 
 ### Programming Assignments
 
