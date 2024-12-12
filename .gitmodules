@@ -1,9 +1,6 @@
 [submodule "labs/lab5-8/vector-lab-turney-jeffTheLandShark"]
 	path = labs/lab5-8/vector-lab-turney-jeffTheLandShark
 	url = git@github.com:MSOE-CPE2600/vector-lab-turney-jeffTheLandShark.git
-[submodule "labs/lab10/signals-turney-jeffTheLandShark"]
-	path = labs/lab10/signals-turney-jeffTheLandShark
-	url = https://github.com/MSOE-CPE2600/signals-turney-jeffTheLandShark.git
 [submodule "labs/lab11/multiprocessing-turney-jeffTheLandShark"]
 	path = labs/lab11-12/multiprocessing-turney-jeffTheLandShark
 	url = https://github.com/MSOE-CPE2600/multiprocessing-turney-jeffTheLandShark
