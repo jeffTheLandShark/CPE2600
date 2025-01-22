@@ -2,7 +2,7 @@
 	path = labs/lab5-8/vector-lab
 	url = git@github.com:MSOE-CPE2600/vector-lab-turney-jeffTheLandShark.git
 [submodule "labs/lab11/multiprocessing-turney-jeffTheLandShark"]
-	path = labs/lab11-12/multiprocessing-turney-jeffTheLandShark
+	path = labs/lab11-12/multiprocessing
 	url = https://github.com/MSOE-CPE2600/multiprocessing-turney-jeffTheLandShark
 [submodule "labs/lab13/final-project-jeffTheLandShark"]
 	path = labs/lab13/final-project
