@@ -5,7 +5,7 @@
 	path = labs/lab11-12/multiprocessing-turney-jeffTheLandShark
 	url = https://github.com/MSOE-CPE2600/multiprocessing-turney-jeffTheLandShark
 [submodule "labs/lab13/final-project-jeffTheLandShark"]
-	path = labs/lab13/final-project/
+	path = labs/lab13/final-project
 	url = https://github.com/MSOE-CPE2600/final-project-jeffTheLandShark.git
 [submodule "group_activity/LectureProject121"]
 	path = group_activity/LectureProject121
