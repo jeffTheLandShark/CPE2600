@@ -6,7 +6,7 @@ The course focuses on programming at the systems level using the C programming l
 
 ## Learning Objectives
 
-This was provided by the course syllabus:
+The following course objectives were provided by the course syllabus:
 
 - Navigate through a Unix system environment.
 - Create and manage users, groups, files, and permissions.
@@ -28,7 +28,7 @@ This was provided by the course syllabus:
 The files in this repository are organized into the following categories:
 
 ```shell
-├── group_activity/     # group exercises / collaborative projects
+├── group_activity/     # group exercises / collaborative projects done in class
 ├── labs/               # weekly lab assignments
 ├── prog_assign/        # programming assignments
 ├── quizzes/            # quiz materials and solutions
