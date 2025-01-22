@@ -1,6 +1,3 @@
 [submodule "labs/lab11/multiprocessing-turney-jeffTheLandShark"]
 	path = labs/lab11-12/multiprocessing
 	url = https://github.com/MSOE-CPE2600/multiprocessing-turney-jeffTheLandShark
-[submodule "group_activity/LectureProject121"]
-	path = group_activity/cruise-ctrl-lecture-project
-	url = https://github.com/Turney399/LectureProject121.git
