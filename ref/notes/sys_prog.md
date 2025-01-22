@@ -52,4 +52,3 @@
 - process id 
   - [code example] `getpid()` is returning the same as `syscall(39)`
   - this is because `getpid()` is a wrapper around `syscall(39)`: `getpid()` is a function in `libc` that calls `syscall(39)` to get the process id
-- 
